@@ -9,7 +9,6 @@ The code is a restructure of Asif Iqbal's into a class @ http://deneb.homedns.or
 * Add GNU Stuff and what not 
 * Create a GUI
 * Make the program remember connection settings, i.e tvip,tvtype, etc.
-* Upload onto GIT or w/e 
 * Add where I got a lot of this code from 
 * Has to be a better way to get Mac address 
 * Error checking on inputs like tvtype, conncetion issue, etc

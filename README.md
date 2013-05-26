@@ -6,7 +6,7 @@ Samsung Smart TV remote written in a Python class.
 Key Code Reference:
 ===================
 
-#KEY_0
+ #KEY_0
  #KEY_1
  #KEY_2
  #KEY_3

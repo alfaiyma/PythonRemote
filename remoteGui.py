@@ -1,9 +1,11 @@
 #!/usr/bin/env python
-# TODO: Change TODO Layout to match others
-# TODO: Add in Python Remote
-# TODO: Put in Buttons
-# TODO: Add docstrings for the frames
-
+#-----------------------------------------
+# TODO:
+'''
+* Integrate Python Remote Class
+* Put in Buttons
+* Add docstrings for the frames
+'''
 import wx
 
 
@@ -11,10 +13,23 @@ class ConnectionConfigBase(wx.Dialog):
     """docstring for ConnectionConfigBase"""
     def __init__(self, parent):
         self.dialog = wx.Dialog.__init__(self, parent=parent, id=-1, title='Testing', size=(300, 300))
-        self.panel = wx.Panel(self, size=(300, 300))
-        label_1 = wx.StaticText(self.panel, -1, 'tvtype', (10, 10))
-        label_2 = wx.StaticText(self.panel, -1, 'mac', (10, 30))
-        label_3 = wx.StaticText(self.panel, -1, 'tvip', (10, 50))
+        okbutton = wx.Button(self, -1, 'Ok', pos=(50, 220))
+        cancelbutton = wx.Button(self, -1, 'Cancel', pos=(150, 220))
+        label1 = wx.StaticText(self, -1, 'tvtype', (10, 10))
+        label1_ctrl = wx.TextCtrl(self, -1, '', (50, 10))
+        label2 = wx.StaticText(self, -1, 'mac', (10, 40))
+        label2_ctrl = wx.TextCtrl(self, -1, '', (50, 40))
+        label3 = wx.StaticText(self, -1, 'tvip', (10, 70))
+        label3_ctrl = wx.TextCtrl(self, -1, '', (50, 70))
+        self.Bind(wx.EVT_BUTTON, self.OnCancel, cancelbutton)
+        self.Bind(wx.EVT_BUTTON, self.OnOk, okbutton)
+
+    def OnCancel(self, event):
+        self.Close()
+
+    def OnOk(self, event):
+        self.Close()
+        print 'Hello'
 
 class App(wx.App):
     """docstring for App"""

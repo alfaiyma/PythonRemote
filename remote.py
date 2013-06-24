@@ -1,5 +1,5 @@
 '''
-Author: Mohammad Al Faiyaz 
+Author: Mohammad Al Faiyaz
 Description: Class based approach to create a remote interface for Samsung Smart TVs 
 The code is a restructure of Asif Iqbal's into a class @ http://deneb.homedns.org/things/?p=232 
 '''
@@ -9,7 +9,6 @@ The code is a restructure of Asif Iqbal's into a class @ http://deneb.homedns.or
 * Add GNU Stuff and what not 
 * Create a GUI
 * Make the program remember connection settings, i.e tvip,tvtype, etc.
-* Add where I got a lot of this code from 
 * Has to be a better way to get Mac address 
 * Error checking on inputs like tvtype, conncetion issue, etc
 * Error checking for constuctor, arguments must be type string 
@@ -17,6 +16,7 @@ The code is a restructure of Asif Iqbal's into a class @ http://deneb.homedns.or
 
 import socket 
 import base64
+
 
 class Remote():
 

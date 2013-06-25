@@ -1,15 +1,14 @@
 '''
 Author: Mohammad Al Faiyaz
-Description: Class based approach to create a remote interface for Samsung Smart TVs 
-The code is a restructure of Asif Iqbal's into a class @ http://deneb.homedns.org/things/?p=232 
+Description: Class based approach to create a remote interface for Samsung Smart TVs
+The code is a restructure of Asif Iqbal's into a class @ http://deneb.homedns.org/things/?p=232
 '''
 #------------------------------------------
 # TODO:
 '''
-* Add GNU Stuff and what not 
-* Create a GUI
+* Add GNU Stuff and what not
 * Make the program remember connection settings, i.e tvip,tvtype, etc.
-* Has to be a better way to get Mac address 
+* Has to be a better way to get Mac address
 * Error checking on inputs like tvtype, conncetion issue, etc
 * Error checking for constuctor, arguments must be type string 
 '''
@@ -38,8 +37,8 @@ class Remote():
 	# The initial connection to the tv 
 	def connect(self):
 		self.sock.connect((self._tvip, 55000)) # Always port 55000 from my understanding
-		# Strings must be encoded in base 64  
-		ipencode = base64.b64encode(self._myip) 
+		# Strings must be encoded in base 64
+		ipencode = base64.b64encode(self._myip)
 		macencode = base64.b64encode(self._mac)
 		remoteencode = base64.b64encode(self.remotename)
 		#More info on these messages can be found @ http://sc0ty.pl/2012/02/samsung-tv-network-remote-control-protocol/ 

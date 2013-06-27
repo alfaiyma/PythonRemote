@@ -10,19 +10,35 @@ the wxPython toolkit. This module requires Python 2.7.x and the respective wxPyt
 '''
 * Integrate Python Remote Class
 * Put in Buttons
-* Organize and refactor ConnectionConfigBase
 * Figure out a way to refactor the message dialog part
 * Figure out how to initialize python remote with returned data
+* Instead of textfield try to make into list for tvtype
+* Cleanup WelcomeFrame
+* Welcome frame dictionary/PopUpBoxData cleanup
 '''
 
 import wx
 import remote
 
 
+class RemoteModel(remote.Remote):
+    """docstring for RemoteModel"""
+    def __init__(self):
+        remote.Remote.__init__(self, '', '', '')
+        self.flag = False
+
+    def InitConnection(self, tvip, tvtype, mac):
+        self._tvip = tvip
+        self._tvtype = tvtype
+        self._mac = mac
+        self.flag = True
+
+
 class ConnectionConfigBase(wx.Dialog):
     '''The dialog box for inputing connection details'''
     def __init__(self, parent):
         self.dialog = wx.Dialog.__init__(self, parent=parent, id=-1, title='Testing', size=(300, 300))
+        self.TxtFieldData = []
         self.InitUI()
 
     def InitUI(self):
@@ -35,7 +51,7 @@ class ConnectionConfigBase(wx.Dialog):
 
     def OnOk(self, event):
         for i in self.textfields:
-            print i.GetValue()
+            self.TxtFieldData.append(i.GetValue())
         self.Close()
 
     def CreateText(self, xdis):
@@ -46,7 +62,7 @@ class ConnectionConfigBase(wx.Dialog):
         textfields = []
         for i in self.TextCtrlData():
             textfields.append(wx.TextCtrl(self, -1, '', (xdis, i)))
-        return textfields
+        return textfields  # Return list for text field reference
 
     def CreateButtons(self, xdis):
         for buttons in self.ButtonData():
@@ -55,13 +71,13 @@ class ConnectionConfigBase(wx.Dialog):
             xdis += 100
 
     def TextCtrlData(self):
-        return (10, 40, 70)  # returns the y value for the 3 text entry fields
+        return (10, 40, 70)  # returns the y value for the text entry fields
 
     def ButtonData(self):
-        return (('Ok', self.OnOk), ('Cancel', self.OnCancel))
+        return (('Ok', self.OnOk), ('Cancel', self.OnCancel))  # Returns button label and corresponding event handler
 
     def TextData(self):
-        return (('tvtype', 10), ('mac', 40), ('tvip', 70))
+        return (('tvtype', 10), ('mac', 40), ('tvip', 70))  # Returns TextData with label and vertical position/text is aligned from same x distance from origin
 
 
 class App(wx.App):
@@ -78,9 +94,14 @@ class WelcomeFrame(wx.Frame):
     def __init__(self):
         self.frame = wx.Frame.__init__(self, parent=None, id=-1, title='Welcome', size=(300, 500))
         self.panel = wx.Panel(self)
-        self.dictionary = self.PopUpBoxData()
+        self.dictionary = self.PopUpBoxData()  # Is this necessary?
         # Creating Menu For File
         self.menubar = wx.MenuBar()
+        self.InitUI()
+        self.model = RemoteModel()
+        self.model.InitConnection('Hello', 'My', '__name__')
+
+    def InitUI(self):
         menuFile = wx.Menu()
         menuEdit = wx.Menu()
         self.CreateMenuItems(menuFile, self.MenuFileData)
@@ -98,7 +119,7 @@ class WelcomeFrame(wx.Frame):
             self.Bind(wx.EVT_MENU, label[1], temp)
 
     def MenuFileData(self):
-        return (('New', self.OnNew), ('Save', self.OnSave), ('Load', self.OnLoad), ('Exit', self.OnClose))
+        return (('New', self.OnNew), ('Save', self.OnSave), ('Load', self.OnLoad), ('Exit', self.OnClose))  # Menu Item label, event handler
 
     def MenuEditData(self):
         return (('Edit Connection', self.OnEdit), ('Edit Keys', self.OnEditC), ('Connect', self.OnConnect))

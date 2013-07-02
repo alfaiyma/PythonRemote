@@ -16,7 +16,6 @@ the wxPython toolkit. This module requires Python 2.7.x and the respective wxPyt
 * Welcome frame dictionary/PopUpBoxData cleanup
 * Elegant way to bind Button Function
 * Make sendkey a modular design
-* Testing Linux push capabilities
 '''
 
 import wx

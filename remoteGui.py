@@ -11,10 +11,11 @@ the wxPython toolkit. This module requires Python 2.7.x and the respective wxPyt
 * Integrate Python Remote Class
 * Put in Buttons
 * Figure out a way to refactor the message dialog part
-* Figure out how to initialize python remote with returned data
 * Instead of textfield try to make into list for tvtype
 * Cleanup WelcomeFrame
 * Welcome frame dictionary/PopUpBoxData cleanup
+* Elegant way to bind Button Function
+* Make sendkey a modular design
 '''
 
 import wx
@@ -27,7 +28,7 @@ class RemoteModel(remote.Remote):
         remote.Remote.__init__(self, '', '', '')
         self.flag = False
 
-    def InitConnection(self, tvip, tvtype, mac):
+    def InitConnection(self, tvtype, mac, tvip):
         self._tvip = tvip
         self._tvtype = tvtype
         self._mac = mac
@@ -45,6 +46,9 @@ class ConnectionConfigBase(wx.Dialog):
         self.CreateButtons(50)
         self.CreateText(10)
         self.textfields = self.CreateTextCtrl(50)
+
+    def GetTxtFieldData(self):
+        return self.TxtFieldData
 
     def OnCancel(self, event):
         self.Close()
@@ -92,14 +96,14 @@ class WelcomeFrame(wx.Frame):
     """The Main/TopFrame for the application. Contains the remote buttons and toolbar menu"""
 
     def __init__(self):
-        self.frame = wx.Frame.__init__(self, parent=None, id=-1, title='Welcome', size=(300, 500))
+        self.frame = wx.Frame.__init__(self, parent=None, id=-1, title='Welcome', size=(190, 660))
         self.panel = wx.Panel(self)
         self.dictionary = self.PopUpBoxData()  # Is this necessary?
         # Creating Menu For File
         self.menubar = wx.MenuBar()
+        self.NumButton = []
         self.InitUI()
         self.model = RemoteModel()
-        self.model.InitConnection('Hello', 'My', '__name__')
 
     def InitUI(self):
         menuFile = wx.Menu()
@@ -109,6 +113,7 @@ class WelcomeFrame(wx.Frame):
         self.menubar.Append(menuFile, '&File')
         self.menubar.Append(menuEdit, '&Edit')
         self.SetMenuBar(self.menubar)
+        self.CreateButtons()
 
     def OnClose(self, event):
         self.Close()
@@ -117,6 +122,37 @@ class WelcomeFrame(wx.Frame):
         for label in data():
             temp = menu.Append(wx.NewId(), label[0])
             self.Bind(wx.EVT_MENU, label[1], temp)
+
+    def CreateButtons(self):
+        pow = wx.Button(self.panel, -1, 'Pow', pos=(5, 5), size=(50, 50))
+        src = wx.Button(self.panel, -1, 'Source', pos=(115, 5), size=(50, 50))
+        ts = self.ButtonData()
+        self.CreateNumButtons()
+
+    def CreateNumButtons(self):
+        posis = (5, 60)
+        for i in range(9):
+            num = i + 1
+            self.NumButton.append(wx.Button(self.panel, -1, str(num), pos=posis, size=(50, 50)))
+            x, y = posis
+            if x < 115:
+                x += 55
+            else:
+                x = 5
+                if y < 170:
+                    y = y + 55
+            posis = (x, y)
+
+    def ButtonData(self):
+        return ('Mute', '0', 'Pre',
+                'Smart', 'UpArw', 'Tools',
+                '<-', 'E', '->',
+                'Ret', 'DwnArw', 'Exit',
+                'A', 'B', 'C',
+                'UpCh', 'D', 'UpVol',
+                'DowCh', 'Fav', 'DowCh',
+                '<<', '||', '>>',
+                'Rec', 'Play', 'Stop')
 
     def MenuFileData(self):
         return (('New', self.OnNew), ('Save', self.OnSave), ('Load', self.OnLoad), ('Exit', self.OnClose))  # Menu Item label, event handler
@@ -145,6 +181,8 @@ class WelcomeFrame(wx.Frame):
     def OnNew(self, event):
         dlg = ConnectionConfigBase(self.frame)
         dlg.ShowModal()
+        initdata = dlg.GetTxtFieldData()
+        self.model.InitConnection(initdata[0], initdata[1], initdata[2])
         dlg.Destroy()
 
     def OnEdit(self, event):

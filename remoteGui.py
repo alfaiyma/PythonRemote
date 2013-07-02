@@ -16,6 +16,7 @@ the wxPython toolkit. This module requires Python 2.7.x and the respective wxPyt
 * Welcome frame dictionary/PopUpBoxData cleanup
 * Elegant way to bind Button Function
 * Make sendkey a modular design
+* Testing Linux push capabilities
 '''
 
 import wx
@@ -125,7 +126,7 @@ class WelcomeFrame(wx.Frame):
 
     def CreateButtons(self):
         pow = wx.Button(self.panel, -1, 'Pow', pos=(5, 5), size=(50, 50))
-        src = wx.Button(self.panel, -1, 'Source', pos=(115, 5), size=(50, 50))
+        src = wx.Button(self.panel, -1, 'Src', pos=(115, 5), size=(50, 50))
         ts = self.ButtonData()
         self.CreateNumButtons()
 
